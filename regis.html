@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Registration Form</title>
+    <link rel="icon" href="image/TITLE.png">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <div class="registration-container">
+        <h2>Registration Form</h2>
+        <form id="registrationForm">
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required pattern="[0-9]{10}">
+            <input type="tel" id="whatsappNumber" placeholder="Enter your WhatsApp number (optional)" pattern="[0-9]{10}">
+            <input type="date" id="dob" required>
+            <input type="text" id="location" placeholder="Enter your location" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            <button type="submit">Register</button>
+            <div id="registrationError" class="error"></div>
+            <div id="registrationSuccess" class="success"></div>
+        </form>
+    </div>
+
+    <!-- Friend Request Modal -->
+    <div id="friendRequestModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Send Friend Request</h3>
+            <input type="tel" id="friendPhoneNumber" placeholder="Enter friend's phone number" pattern="[0-9]{10}">
+            <button id="sendFriendRequest">Send Request</button>
+            <button id="closeFriendRequestModal">Close</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        // Configure toastr
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+        };
+
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                toastr.error('Passwords do not match');
+                return;
+            }
+
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                whatsappNumber: document.getElementById('whatsappNumber').value || null,
+                dob: document.getElementById('dob').value,
+                location: document.getElementById('location').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('http://localhost:5001/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    toastr.success('Registration successful!');
+                    localStorage.setItem('userId', data.userId);
+                    // Redirect to appropriate page after successful registration
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    toastr.error(data.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                toastr.error('Error during registration. Please try again.');
+            }
+        });
+
+        // Friend request functionality
+        function showFriendRequestModal() {
+            document.getElementById('friendRequestModal').style.display = 'block';
+        }
+
+        function closeFriendRequestModal() {
+            document.getElementById('friendRequestModal').style.display = 'none';
+        }
+
+        document.getElementById('closeFriendRequestModal').addEventListener('click', closeFriendRequestModal);
+
+        document.getElementById('sendFriendRequest').addEventListener('click', async () => {
+            const friendPhone = document.getElementById('friendPhoneNumber').value;
+            const userId = localStorage.getItem('userId');
+
+            if (!userId) {
+                toastr.error('Please log in first');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/users/friend-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        senderUserId: userId,
+                        receiverPhone: friendPhone
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    toastr.success('Friend request sent successfully');
+                    closeFriendRequestModal();
+                } else {
+                    toastr.error(data.message || 'Failed to send friend request');
+                }
+            } catch (error) {
+                console.error('Friend request error:', error);
+                toastr.error('Error sending friend request. Please try again.');
+            }
+        });
+
+        // Update activity status periodically
+        function updateActivity() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                fetch(`http://localhost:5001/api/users/${userId}/activity`, {
+                    method: 'POST'
+                }).catch(console.error);
+            }
+        }
+
+        // Update activity every minute
+        setInterval(updateActivity, 60000);
+        updateActivity(); // Initial update
+    </script>
+</body>
+</html>

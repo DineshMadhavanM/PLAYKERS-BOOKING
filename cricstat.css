@@ -1,0 +1,102 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+h1 {
+    color: #1d2129;
+    font-size: 28px;
+}
+
+main {
+    width: 100%;
+    max-width: 800px;
+}
+
+.stat-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+#player-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    min-width: 250px;
+}
+
+#player-stats-display {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+    margin-bottom: 20px;
+  }
+
+.stat-card h2 {
+    font-size: 20px;
+    color: #1877f2;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+
+.stat-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.stat-table th, .stat-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f2f5;
+  }
+
+.stat-table th {
+    background-color: #f7f7f7;
+    font-weight: 600;
+  }
+
+.stat-table tr:last-child td {
+    border-bottom: none;
+  }
+
+footer {
+    margin-top: 30px;
+    color: #888;
+}
+
+footer a {
+    color: #1877f2;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+  }

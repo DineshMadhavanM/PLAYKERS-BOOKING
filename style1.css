@@ -1,0 +1,125 @@
+body {
+    background-color: #e3fba5; 
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.searchbar {
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s;
+}
+
+.searchbar input {
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.searchbar button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #5cb85c;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.searchbar button:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+.ground {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    flex-basis:20%;
+}
+
+.box2 {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.box2:hover {
+    transform: scale(1.05);
+    background-color: #f5fff0;
+}
+
+.video{
+    background: url('https://www.transparenttextures.com/patterns/green-dust-and-scratches.png');
+    background-color: #d4f5a1;
+
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #d4f5a1, #ffffff); 
+    color: #333;
+}
+.divider {
+    border: 0;
+    height: 2px;
+    background: black; 
+    margin: 10px 50px;
+    border-radius: 2px;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+nav{
+    background-color: black;
+    color: white;
+    padding: 15px;
+}
+li,h1,ul{
+    display: inline;
+}
+ul{
+    margin-left: 72%;
+}
+li{
+    color: gray;
+}
+li:hover{
+    color: white;
+}
+
+.box4 {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: 250px;
+    margin: 20px;
+    vertical-align: top;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: transform 0.3s;
+}
+
+.box4:hover {
+    transform: scale(1.05);
+    background-color: #f5fff0;
+}
+.ground1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+@media screen and(max-width:600px){
+    .ground{
+        flex-basis: 100%;
+    }
+}

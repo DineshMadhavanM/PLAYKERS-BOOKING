@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sports Store</title>
+  <link rel="stylesheet" href="pro cric.css" />
+</head>
+<body>
+  <header>
+    <h1>🏏 Sports Store</h1>
+    <div id="cart-icon" onclick="toggleCart()">🛍️ Cart (<span id="cart-count">0</span>)</div>
+  </header>
+
+  <main id="product-list">
+    <div class="product">
+      <img src="image/cric bat.jpeg" alt="Cricket Bat" />
+      <h3>Cricket Bat</h3>
+      <p>₹1200</p>
+      <button onclick="addToCart('Cricket Bat', 1200)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="image/cric ball.jpeg" alt="Cricket Ball" />
+      <h3>Cricket Ball</h3>
+      <p>₹250</p>
+      <button onclick="addToCart('Cricket Ball', 250)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="image/cric helmet.jpeg" alt="Helmet" />
+      <h3>Helmet</h3>
+      <p>₹800</p>
+      <button onclick="addToCart('Helmet', 800)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="image/cric kit.jpg" alt="Kit Bag"/>
+      <h3>Kit Bag</h3>
+      <p>₹4500</p>
+      <button onclick="addToCart('Kit Bag',4500)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="image/cric hand-gloves.jpg" alt="Hand Gloves"/>
+      <h3>Hand Gloves</h3>
+      <p>₹500</p>
+      <button onclick="addToCart('Hand Gloves',500)">Add to Cart</button>
+    </div>
+  </main>
+
+  <div id="cart" class="hidden">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
+    <button onclick="checkout()" <a href="billing.html>"</a>>Checkout</button>
+  </div>
+
+  <script src="pro cric.js"></script>
+</body>
+</html>

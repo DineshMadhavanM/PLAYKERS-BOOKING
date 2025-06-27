@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+h2 {
+    color: #1d2129;
+    font-size: 22px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    color: #333;
+    font-size: 18px;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#profileInfo {
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+#profileInfo b {
+    color: #555;
+    width: 150px;
+    display: inline-block;
+}
+
+#recentPerformances ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#recentPerformances li {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}

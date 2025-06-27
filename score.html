@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cricket Scorer</title>
+  <link rel="icon" href="image/TITLE.png">
+  <link rel="stylesheet" href="sco.css">
+</head>
+<body>
+  <main class="container">
+    <h1 class="title">Cricket Scorer</h1>
+    <form id="setupForm" autocomplete="off">
+      <!-- Step 1: Squad Entry -->
+      <section id="step1" class="setup-step">
+        <h2>Step 1: Enter Team Squads (15 players each)</h2>
+        <div class="teams-section">
+          <div class="team-box">
+            <label for="teamAName">Team A Name</label>
+            <input type="text" id="teamAName" class="input" required>
+            <label>Squad (15 players)</label>
+            <ol id="teamASquadList">
+              <li><input type="text" class="input teamASquad" placeholder="Player 1" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 2" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 3" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 4" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 5" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 6" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 7" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 8" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 9" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 10" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 11" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 12" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 13" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 14" required></li>
+              <li><input type="text" class="input teamASquad" placeholder="Player 15" required></li>
+            </ol>
+          </div>
+          <div class="team-box">
+            <label for="teamBName">Team B Name</label>
+            <input type="text" id="teamBName" class="input" required>
+            <label>Squad (15 players)</label>
+            <ol id="teamBSquadList">
+              <li><input type="text" class="input teamBSquad" placeholder="Player 1" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 2" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 3" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 4" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 5" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 6" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 7" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 8" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 9" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 10" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 11" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 12" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 13" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 14" required></li>
+              <li><input type="text" class="input teamBSquad" placeholder="Player 15" required></li>
+            </ol>
+          </div>
+        </div>
+        <button type="button" class="btn" id="toStep2">Next: Toss</button>
+      </section>
+      <!-- Step 2: Toss and Choice -->
+      <section id="step2" class="setup-step" style="display:none;">
+        <h2>Step 2: Toss and Innings Choice</h2>
+        <label for="tossWinner">Who won the toss?</label>
+        <select id="tossWinner" class="input" required></select>
+        <label for="tossDecision">Decision</label>
+        <select id="tossDecision" class="input" required>
+          <option value="bat">Bat</option>
+          <option value="bowl">Bowl</option>
+        </select>
+        <button type="button" class="btn" id="toStep3">Next: Select Playing XI</button>
+      </section>
+      <!-- Step 3: Select Playing XI -->
+      <section id="step3" class="setup-step" style="display:none;">
+        <h2>Step 3: Select Playing XI</h2>
+        <div class="teams-section">
+          <div class="team-box">
+            <label id="teamA_XI_label">Team A XI</label>
+            <div id="teamA_XI_select"></div>
+          </div>
+          <div class="team-box">
+            <label id="teamB_XI_label">Team B XI</label>
+            <div id="teamB_XI_select"></div>
+          </div>
+        </div>
+        <button type="button" class="btn" id="toStep4">Next: Match Config</button>
+      </section>
+      <!-- Step 4: Match Config -->
+      <section id="step4" class="setup-step" style="display:none;">
+        <h2>Step 4: Match Configuration</h2>
+        <label for="totalOvers">Total Overs (1-50)</label>
+        <input type="number" id="totalOvers" class="input" min="1" max="50" required>
+        <label for="ballType">Ball Type</label>
+        <select id="ballType" class="input" required>
+          <option value="leather">Leather Ball</option>
+          <option value="tennis">Tennis Ball</option>
+          <option value="stumper">Stumper Ball</option>
+          <option value="karat">Karat Ball</option>
+        </select>
+        <div id="bowlerLimitInfo" style="margin-top:0.7rem;color:#225ea8;"></div>
+        <button type="button" class="btn" id="toStep5">Next: Start Match</button>
+      </section>
+      <!-- Step 5: Start Match (Striker, Non-striker, Bowler) -->
+      <section id="step5" class="setup-step" style="display:none;">
+        <h2>Step 5: Select Striker, Non-Striker, and First Bowler</h2>
+        <div class="teams-section">
+          <div class="team-box">
+            <label for="strikerSelect">Striker</label>
+            <select id="strikerSelect" class="input"></select>
+            <label for="nonStrikerSelect">Non-Striker</label>
+            <select id="nonStrikerSelect" class="input"></select>
+          </div>
+          <div class="team-box">
+            <label for="firstBowlerSelect">First Bowler</label>
+            <select id="firstBowlerSelect" class="input"></select>
+          </div>
+        </div>
+        <button type="submit" class="btn">Start Scoring</button>
+      </section>
+    </form>
+    <section id="scorerSection" style="display:none;">
+      <div id="scoringUI"></div>
+      
+      <!-- Hidden modals for user prompts -->
+      <div id="scoringModals"></div>
+
+      <!-- Final save button -->
+      <div id="saveMatchBox" style="display:none; margin-top:2rem; text-align:center;">
+        <button class="btn" id="saveMatchBtn">Save Match</button>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

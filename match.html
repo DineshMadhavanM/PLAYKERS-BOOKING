@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Match Details - Cricbuzz Clone</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+  <div id="matchDetails"></div>
+  <a href="index.html" class="btn btn-secondary mt-3">Back to Home</a>
+</div>
+<script>
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+const matchId = getQueryParam('id');
+const matches = JSON.parse(localStorage.getItem('matches') || '[]');
+const match = matches.find(m => m.id === matchId);
+const matchDiv = document.getElementById('matchDetails');
+if (!match) {
+  matchDiv.innerHTML = '<div class="alert alert-danger">Match not found.</div>';
+} else {
+  let html = `<h2>${match.teamA} vs ${match.teamB} <small class='text-muted'>(${match.date})</small></h2>`;
+  html += `<h4>Score: ${match.teamA} ${match.scoreA} - ${match.teamB} ${match.scoreB}</h4>`;
+  html += '<h5 class="mt-4">Players</h5>';
+  html += '<table class="table table-bordered table-striped"><thead><tr><th>Name</th><th>Team</th><th>Batting (Runs/Balls)</th><th>Bowling (Overs/Wickets/Runs)</th><th>Stumpings</th><th>Catches</th><th>Run Outs</th></tr></thead><tbody>';
+  match.players.forEach(player => {
+    html += `<tr>
+      <td><a href="player.html?name=${encodeURIComponent(player.name)}">${player.name}</a></td>
+      <td>${player.team}</td>
+      <td>${player.batting.runs}/${player.batting.balls}</td>
+      <td>${player.bowling.overs}/${player.bowling.wickets}/${player.bowling.runsGiven}</td>
+      <td>${player.keeping.stumpings}</td>
+      <td>${player.catches}</td>
+      <td>${player.runOuts}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  matchDiv.innerHTML = html;
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

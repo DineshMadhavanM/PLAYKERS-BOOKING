@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Match</title>
+    <link rel="icon" href="image/TITLE.png">
+    <link rel="stylesheet" href="cricmatch.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <div class="match-container">
+        <h2>Cricket Match Setup</h2>
+
+        <!-- Player Selection Form -->
+        <div id="playerSelectionForm" class="form-section">
+            <h3>Request to Join Match</h3>
+            <div class="form-group">
+                <label>Match Type:</label>
+                <select id="matchType" required>
+                    <option value="T20">T20</option>
+                    <option value="ODI">ODI</option>
+                    <option value="Test">Test</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Preferred Date:</label>
+                <input type="date" id="preferredDate" required>
+            </div>
+            <div class="form-group">
+                <label>Preferred Venue:</label>
+                <input type="text" id="preferredVenue" required>
+            </div>
+            <button onclick="requestMatch()" class="primary-button">Request to Join Match</button>
+        </div>
+
+        <!-- Team Formation Section -->
+        <div id="teamFormation">
+            <div class="team-section">
+                <h3>Team A</h3>
+                <div class="player-selection">
+                    <div class="friends-list">
+                        <h4>Select from Friends</h4>
+                        <div id="teamAFriends" class="friends-grid"></div>
+                    </div>
+                    <div class="selected-players">
+                        <h4>Selected Players</h4>
+                        <div id="teamASelected" class="selected-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <h3>Team B</h3>
+                <div class="player-selection">
+                    <div class="friends-list">
+                        <h4>Select from Friends</h4>
+                        <div id="teamBFriends" class="friends-grid"></div>
+                    </div>
+                    <div class="selected-players">
+                        <h4>Selected Players</h4>
+                        <div id="teamBSelected" class="selected-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Match Details Section -->
+        <div id="matchDetails" style="display: none;">
+            <div class="match-info">
+                <h3>Match Information</h3>
+                <div class="form-group">
+                    <label>Match Type:</label>
+                    <select id="matchType">
+                        <option value="T20">T20</option>
+                        <option value="ODI">ODI</option>
+                        <option value="Test">Test</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Venue:</label>
+                    <input type="text" id="venue" required>
+                </div>
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="date" id="matchDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Time:</label>
+                    <input type="time" id="matchTime" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button id="proceedToMatch" onclick="showMatchDetails()">Proceed to Match Details</button>
+            <button id="startMatch" onclick="startMatch()" style="display: none;">Start Match</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <script>
+        // Configure toastr
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+        };
+
+        let selectedPlayers = {
+            teamA: [],
+            teamB: []
+        };
+
+        // Connect to WebSocket
+        const socket = io('http://localhost:5001');
+
+        // Load friends when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                toastr.error('Please log in first');
+                return;
+            }
+
+            try {
+                // Get user's friends
+                const response = await fetch(`http://localhost:5001/api/users/${userId}/friends`);
+                const friends = await response.json();
+
+                // Display friends in both team sections
+                displayFriends(friends, 'teamAFriends', 'A');
+                displayFriends(friends, 'teamBFriends', 'B');
+
+                // Check for copied user data
+                const copiedUser = JSON.parse(localStorage.getItem('copiedUser') || 'null');
+                if (copiedUser) {
+                    // Add copied user to Team A by default
+                    addPlayerToTeam('A', {
+                        username: copiedUser.username,
+                        phoneNumber: copiedUser.phoneNumber,
+                        location: copiedUser.location,
+                        dob: copiedUser.dob
+                    });
+                    localStorage.removeItem('copiedUser'); // Clear copied data
+                }
+            } catch (error) {
+                console.error('Error loading friends:', error);
+                toastr.error('Error loading friends');
+            }
+        });
+
+        function displayFriends(friends, containerId, team) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            friends.forEach(friend => {
+                const friendCard = document.createElement('div');
+                friendCard.className = 'friend-card';
+                friendCard.innerHTML = `
+                    <h4>${friend.username}</h4>
+                    <p>Location: ${friend.location}</p>
+                    <button onclick="addPlayerToTeam('${team}', ${JSON.stringify(friend).replace(/'/g, "\\'")})">
+                        Add to Team ${team}
+                    </button>
+                `;
+                container.appendChild(friendCard);
+            });
+        }
+
+        function addPlayerToTeam(team, player) {
+            if (selectedPlayers[`team${team}`].length >= 11) {
+                toastr.warning(`Team ${team} is already full`);
+                return;
+            }
+
+            // Check if player is already in either team
+            if (selectedPlayers.teamA.find(p => p.phoneNumber === player.phoneNumber) ||
+                selectedPlayers.teamB.find(p => p.phoneNumber === player.phoneNumber)) {
+                toastr.warning('Player is already selected in a team');
+                return;
+            }
+
+            selectedPlayers[`team${team}`].push(player);
+            updateSelectedPlayersDisplay(team);
+        }
+
+        function removePlayerFromTeam(team, phoneNumber) {
+            selectedPlayers[`team${team}`] = selectedPlayers[`team${team}`].filter(
+                p => p.phoneNumber !== phoneNumber
+            );
+            updateSelectedPlayersDisplay(team);
+        }
+
+        function updateSelectedPlayersDisplay(team) {
+            const container = document.getElementById(`team${team}Selected`);
+            container.innerHTML = '';
+
+            selectedPlayers[`team${team}`].forEach(player => {
+                const playerCard = document.createElement('div');
+                playerCard.className = 'player-card';
+                playerCard.innerHTML = `
+                    <h4>${player.username}</h4>
+                    <p>Location: ${player.location}</p>
+                    <button onclick="removePlayerFromTeam('${team}', '${player.phoneNumber}')">
+                        Remove
+                    </button>
+                `;
+                container.appendChild(playerCard);
+            });
+        }
+
+        function showMatchDetails() {
+            if (selectedPlayers.teamA.length < 11 || selectedPlayers.teamB.length < 11) {
+                toastr.warning('Please select 11 players for each team');
+                return;
+            }
+
+            document.getElementById('matchDetails').style.display = 'block';
+            document.getElementById('proceedToMatch').style.display = 'none';
+            document.getElementById('startMatch').style.display = 'block';
+        }
+
+        async function startMatch() {
+            const matchData = {
+                type: document.getElementById('matchType').value,
+                venue: document.getElementById('venue').value,
+                date: document.getElementById('matchDate').value,
+                time: document.getElementById('matchTime').value,
+                teamA: selectedPlayers.teamA,
+                teamB: selectedPlayers.teamB
+            };
+
+            if (!matchData.venue || !matchData.date || !matchData.time) {
+                toastr.warning('Please fill in all match details');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/matches', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(matchData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    toastr.success('Match created successfully');
+                    // Store match data for scoring
+                    localStorage.setItem('currentMatch', JSON.stringify(data));
+                    // Redirect to scoring page
+                    window.location.href = 'scorecard.html';
+                } else {
+                    toastr.error(data.message || 'Error creating match');
+                }
+            } catch (error) {
+                console.error('Error creating match:', error);
+                toastr.error('Error creating match');
+            }
+        }
+
+        async function requestMatch() {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                toastr.error('Please log in first');
+                return;
+            }
+
+            const matchType = document.getElementById('matchType').value;
+            const preferredDate = document.getElementById('preferredDate').value;
+            const preferredVenue = document.getElementById('preferredVenue').value;
+
+            if (!matchType || !preferredDate || !preferredVenue) {
+                toastr.warning('Please fill in all fields');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/matches/request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        matchType,
+                        preferredDate,
+                        preferredVenue
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    toastr.success('Match request submitted successfully');
+                    // Clear form
+                    document.getElementById('preferredDate').value = '';
+                    document.getElementById('preferredVenue').value = '';
+                } else {
+                    toastr.error(data.message || 'Error submitting match request');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                toastr.error('Error submitting match request');
+            }
+        }
+    </script>
+</body>
+</html>

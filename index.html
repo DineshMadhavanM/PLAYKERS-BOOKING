@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PLAYKERS BOOKING</title>
+  <link rel="icon" href="image/TITLE.png">
+  <style>
+    body {
+      background-color: #e3fba5 !important; /* Using !important to override other CSS files */
+    }
+  </style>
+  <link rel="stylesheet" href="style.css"> 
+  <link rel="stylesheet" href="bac.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="body">
+  <nav class="menu-bar">
+    <ul class="main-menu">
+      <li class="dropdown-parent">
+        <a href="#">PROFILE</a>
+        <ul class="dropdown-menu">
+            <li><a href="mymat.html">MY Matches</a></li>
+            <li><a href="mytourna.html">MY Tournament</a></li>
+            <li><a href="myteam.html">MY Teams</a></li>
+            <li><a href="mystat.html">MY Stats</a></li>
+            <li><a href="myper.html">MY Performance</a></li>
+            <li><a href="myhigh.html">MY Highlights</a></li>
+            <li><a href="game.html">Start A Match</a></li>
+            <li><a href="starttourn.html">Start a Tournament/series</a></li>
+            <li><a href="findmat.html">Find a Available Match</a></li>
+            <li><a href="findplay.html">Find a Available Player</a></li>
+            <li><a href="ava.html">Set My Availability</a></li>
+            <li><a href="" id="admin-user-link">Admin User</a></li>
+        </ul>
+      </li>
+      <li class="dropdown-parent">
+        <a href="#" id="admin-menu-toggle">ADMIN</a>
+        <div id="admin-dropdown">
+            <div id="registered-users-li">
+                <h4>Registered Users</h4>
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>DOB</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- User data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </li>
+      <li><a href="#">Help</a></li>
+    </ul>
+  </nav>
+  <center>
+    <h1 class="one">PLAYKERS BOOKING 🏏</h1>
+    <p class="two">TIME TO PLAY, LOVE TO PLAY</p>
+  </center>
+  <hr>
+  <div class="searchbar">
+    <input type="text" id="search" placeholder="Search">
+    <button>Search</button>
+  </div>
+  <div class="booking">
+    <div class="box">
+      <img src="image/raina.webp" alt="CRICKET" width="200" height="150"><br>
+      <a href="cis.html" color="black">CRICKET</a><br>
+    </div>
+    <div class="box">
+      <img src="image/tennis.jpeg" alt="TENNIS" width="200" height="150"><br>
+      <a href="tis.html">TENNIS</a><br>
+    </div>
+    <div class="box">
+      <img src="image/messi.webp" alt="FOOT BALL" width="200" height="150"><br>
+      <a href="fis.html">FOOT BALL</a><br>
+    </div>
+    <div class="box">
+      <img src="image/hand.avif" alt="HAND BALL" width="200" height="150"><br>
+      <a href="his.html">HAND BALL</a><br>
+    </div>
+    <div class="box">
+      <img src="image/kaba.webp" alt="KABADDI" width="200" height="150"><br>
+      <a href="kis.html">KABADDI</a><br>
+    </div>
+  </div>
+  <hr>
+  <center><h2>SPORTS ESSENTIALS</h2></center>
+  <p>
+    Sports essentials refer to the basic items and equipment required to play or participate in any sport safely and effectively. Each sport has its own set of necessary gear, such as a bat and ball for cricket or a racket and tennis ball for tennis. Protective gear like helmets, shin guards, and gloves help prevent injuries. Proper footwear is also important to provide grip and support during movement. Comfortable and breathable sportswear helps players perform at their best. Water bottles and energy drinks are essential to stay hydrated. In team sports, jerseys help identify players. Training tools like cones and skipping ropes assist in fitness drills. Advanced equipment like smartwatches and fitness bands track performance. Overall, sports essentials ensure safety, improve performance, and enhance the sporting experience.
+  </p><br>
+  <center><a href="shop.html">CLICK TO BUY</a></center><br>
+  <script src="collections.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Admin credentials (hardcoded for now)
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'admin123';
+
+        // Check if user is logged in as admin
+        let isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+        // Function to format date nicely
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString(undefined, options);
+        }
+
+        // Function to save users to localStorage
+        function saveUsersToStorage(users) {
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+        }
+
+        // Function to get users from localStorage
+        function getUsersFromStorage() {
+            const users = localStorage.getItem('registeredUsers');
+            return users ? JSON.parse(users) : [];
+        }
+
+        // Function to display users in console
+        function logUsersToConsole(users) {
+            console.log('=== Registered Users Details ===');
+            users.forEach((user, index) => {
+                console.log('\nUser ' + (index + 1) + ':');
+                console.log('Username:', user.username);
+                console.log('Email:', user.email);
+                console.log('Phone Number:', user.phoneNumber);
+                console.log('Date of Birth:', formatDate(user.dob));
+                console.log('------------------------');
+            });
+            console.log('\nTotal Users:', users.length);
+        }
+
+        // Function to update table with user data
+        function updateUserTable(users) {
+            const tableBody = document.getElementById('admin-user-table-body');
+            if (!tableBody) return;
+
+            tableBody.innerHTML = '';
+
+            if (!users || users.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No registered users found.</td></tr>';
+                return;
+            }
+
+            users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : 'white';
+                row.innerHTML = `
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">${user.username || 'N/A'}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">${user.email || 'N/A'}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">${user.phoneNumber || 'N/A'}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">${formatDate(user.dob)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Add summary row
+            const summaryRow = document.createElement('tr');
+            summaryRow.style.backgroundColor = '#f1f1f1';
+            summaryRow.style.fontWeight = 'bold';
+            summaryRow.innerHTML = `
+                <td colspan="4" style="padding: 12px; text-align: center;">
+                    Total Registered Users: ${users.length}
+                </td>
+            `;
+            tableBody.appendChild(summaryRow);
+        }
+
+        // Add click handler for Admin User link
+        const adminUserLink = document.getElementById('admin-user-link');
+        const adminUserTable = document.getElementById('admin-user-table');
+
+        if (adminUserLink) {
+            // Only show admin link if user is admin
+            adminUserLink.style.display = isAdmin ? 'block' : 'none';
+
+            adminUserLink.addEventListener('click', async function(e) {
+                e.preventDefault();
+
+                if (!isAdmin) {
+                    // Show admin login prompt
+                    const username = prompt('Enter admin username:');
+                    const password = prompt('Enter admin password:');
+
+                    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                        isAdmin = true;
+                        localStorage.setItem('isAdmin', 'true');
+                        adminUserLink.style.display = 'block';
+                    } else {
+                        alert('Invalid admin credentials!');
+                        return;
+                    }
+                }
+
+                // Show the table
+                if (adminUserTable) {
+                    adminUserTable.style.display = 'block';
+                }
+
+                try {
+                    const res = await fetch('http://localhost:5000/api/users');
+                    const users = await res.json();
+
+                    // Store users in localStorage
+                    saveUsersToStorage(users);
+
+                    // Log to console
+                    logUsersToConsole(users);
+
+                    // Update table
+                    updateUserTable(users);
+
+                } catch (err) {
+                    console.error('Error fetching user details:', err);
+                    if (adminUserTable) {
+                        const tableBody = document.getElementById('admin-user-table-body');
+                        if (tableBody) {
+                            tableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 20px; color: red;">
+                                        Error loading users. Please try again.
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    }
+                }
+            });
+
+            // Close table when clicking outside
+            document.addEventListener('click', function(e) {
+                if (adminUserTable && !adminUserTable.contains(e.target) && 
+                    e.target !== adminUserLink && 
+                    adminUserTable.style.display === 'block') {
+                    adminUserTable.style.display = 'none';
+                }
+            });
+
+            // Load saved users on page load if admin
+            if (isAdmin) {
+                const savedUsers = getUsersFromStorage();
+                if (savedUsers.length > 0) {
+                    logUsersToConsole(savedUsers);
+                    updateUserTable(savedUsers);
+                }
+            }
+        }
+
+        // Add logout button
+        const logoutButton = document.createElement('button');
+        logoutButton.textContent = 'Logout Admin';
+        logoutButton.style.display = isAdmin ? 'block' : 'none';
+        logoutButton.style.marginLeft = '10px';
+        logoutButton.style.padding = '5px 10px';
+        logoutButton.style.backgroundColor = '#e74c3c';
+        logoutButton.style.color = 'white';
+        logoutButton.style.border = 'none';
+        logoutButton.style.borderRadius = '4px';
+        logoutButton.style.cursor = 'pointer';
+
+        logoutButton.addEventListener('click', function() {
+            isAdmin = false;
+            localStorage.removeItem('isAdmin');
+            adminUserLink.style.display = 'none';
+            logoutButton.style.display = 'none';
+            if (adminUserTable) {
+                adminUserTable.style.display = 'none';
+            }
+        });
+
+        // Add logout button to the navigation
+        const navBar = document.querySelector('.menu-bar');
+        if (navBar) {
+            navBar.appendChild(logoutButton);
+        }
+    });
+  </script>
+  <!-- Add the admin user table container -->
+  <div id="admin-user-table" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 9999; max-height: 80vh; overflow-y: auto; min-width: 800px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="margin: 0;">Registered Users Details</h3>
+          <button onclick="document.getElementById('admin-user-table').style.display='none'" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+              <tr style="background: #3498db; color: white;">
+                  <th style="padding: 12px; text-align: left;">Username</th>
+                  <th style="padding: 12px; text-align: left;">Email</th>
+                  <th style="padding: 12px; text-align: left;">Phone Number</th>
+                  <th style="padding: 12px; text-align: left;">Date of Birth</th>
+              </tr>
+          </thead>
+          <tbody id="admin-user-table-body">
+              <!-- User data will be inserted here -->
+          </tbody>
+      </table>
+  </div>
+</body>
+</html>

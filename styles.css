@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.one {
+    background: linear-gradient(white, white); 
+    color: green;
+    font-weight: bold;
+    padding: 1% 0;
+    font-size: 4em;
+    text-align: center;
+}
+
+.two {
+    background: linear-gradient(white, white);
+    padding: 1% 0;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2em;
+    color: black;
+}
+nav {
+    background-color: black;
+    color: white;
+    padding: 15px;
+}
+
+li, h2, ul {
+    display: inline;
+}
+
+ul {
+    margin-left: 72%;
+}
+
+li {
+    color: gray;
+}
+.searchbar {
+    padding: 30px;
+    text-align: center;
+    background: #e3fcd6; 
+}
+
+.searchbar input {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.searchbar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-left: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.searchbar button:hover {
+    background-color: gray;
+}
+
+.booking {
+    text-align: center;
+    padding: 20px;
+}
+
+.box {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.box:hover {
+    transform: scale(1.05);
+    background-color: #f5fff0;
+}
+.booking {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+.top-nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  font-family: sans-serif;
+}
+
+.dashboard-btn {
+  background-color: #e3fcd6;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.dropdown {
+  display: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  border-radius: 6px;
+  padding: 10px;
+  list-style: none;
+  min-width: 220px;
+  position: absolute;
+  right: 0;
+}
+
+.dropdown li {
+  margin: 5px 0;
+}
+
+.dropdown li a {
+  text-decoration: none;
+  color: black;
+  display: block;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.dropdown li a:hover {
+  background-color: #f0f0f0;
+}
+
+#dashboard-toggle:checked + .dashboard-btn + .dropdown {
+  display: block;
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Matches</title>
+    <link rel="icon" href="image/TITLE.png">
+    <link rel="stylesheet" href="cricstat.css"> <!-- Reusing styles -->
+    <style>
+        .match-item {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden; /* Ensures the border-radius is respected by children */
+        }
+        .match-summary {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .match-summary:hover {
+            background-color: #f7f7f7;
+        }
+        .match-summary h3 {
+            margin: 0 0 10px 0;
+            color: #1877f2;
+        }
+        .match-summary p {
+            margin: 0;
+        }
+        .match-scorecard {
+            padding: 0 20px 20px 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            border-top: 1px solid #eee;
+        }
+        .match-scorecard.expanded {
+            max-height: 2000px; /* Large enough to fit content */
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Matches</h1>
+    </header>
+    <main>
+        <div id="match-list">
+            <!-- Match list will be rendered here -->
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const matchList = document.getElementById('match-list');
+
+            fetch('http://localhost:5001/api/matches')
+                .then(res => res.json())
+                .then(matches => {
+                    if (matches.length === 0) {
+                        matchList.innerHTML = '<p>No saved matches found.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    matches.forEach(match => {
+                        html += `
+                            <div class="match-item">
+                                <div class="match-summary" data-match-id="${match._id}">
+                                    <h3>${match.teamA.name} vs ${match.teamB.name}</h3>
+                                    <p><strong>Date:</strong> ${new Date(match.date).toLocaleDateString()}</p>
+                                    <p><strong>Result:</strong> ${match.result}</p>
+                                </div>
+                                <div class="match-scorecard" id="scorecard-${match._id}">
+                                    ${renderFullScorecard(match)}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    matchList.innerHTML = html;
+
+                    // Add click listeners for the accordion
+                    document.querySelectorAll('.match-summary').forEach(item => {
+                        item.addEventListener('click', event => {
+                            const matchId = event.currentTarget.dataset.matchId;
+                            const scorecardEl = document.getElementById(`scorecard-${matchId}`);
+                            scorecardEl.classList.toggle('expanded');
+                        });
+                    });
+                })
+                .catch(err => {
+                    console.error('Error fetching matches:', err);
+                    matchList.innerHTML = '<p class="error">Error loading matches.</p>';
+                });
+        });
+
+        function renderFullScorecard(match) {
+            let html = '';
+            if (!match.innings || match.innings.length === 0) {
+                return '<p>Scorecard data is not available for this match.</p>';
+            }
+            
+            match.innings.forEach((inning, index) => {
+                html += `
+                    <div class="stat-card">
+                        <h2>Innings ${index + 1}: ${inning.battingTeam}</h2>
+                        <p><strong>Score: ${inning.score}/${inning.wickets} (${inning.overs} Overs)</strong></p>
+                        
+                        <h3>Batting</h3>
+                        <table class="stat-table">
+                            <thead>
+                                <tr><th>Batsman</th><th>Status</th><th>R</th><th>B</th><th>4s</th><th>6s</th></tr>
+                            </thead>
+                            <tbody>
+                                ${inning.batsmen.map(b => `
+                                    <tr>
+                                        <td>${b.name}</td><td>${b.status}</td><td>${b.runs}</td><td>${b.balls}</td><td>${b.fours}</td><td>${b.sixes}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+
+                        <h3>Bowling</h3>
+                        <table class="stat-table">
+                            <thead>
+                                <tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th></tr>
+                            </thead>
+                            <tbody>
+                                ${inning.bowlers.map(b => `
+                                    <tr>
+                                        <td>${b.name}</td><td>${b.overs}</td><td>${b.maidens}</td><td>${b.runs}</td><td>${b.wickets}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+            return html;
+        }
+    </script>
+</body>
+</html>

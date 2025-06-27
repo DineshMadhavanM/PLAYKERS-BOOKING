@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sports Store</title>
+  <link rel="stylesheet" href="pro cric.css" />
+</head>
+<body>
+  <header>
+    <h1>🏏 Sports Store</h1>
+    <div id="cart-icon" onclick="toggleCart()">🛍️ Cart (<span id="cart-count">0</span>)</div>
+  </header>
+
+  <main id="product-list">
+    <div class="product">
+      <img src="image/pro foot.webp" alt="Foot Ball" />
+      <h3>Foot Ball</h3>
+      <p>₹1250</p>
+      <button onclick="addToCart('Foot Ball', 1250)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="image/foot shoe.jpeg" alt="Football Shoe" />
+      <h3>Helmet</h3>
+      <p>₹1500</p>
+      <button onclick="addToCart('Football Shoe', 1500)">Add to Cart</button>
+    </div>
+    
+  </main>
+
+  <div id="cart" class="hidden">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
+    <button onclick="checkout()" <a href="billing.html>"</a>>Checkout</button>
+  </div>
+
+  <script src="pro cric.js"></script>
+</body>
+</html>
