@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5a6fd8;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+    <h1>🔧 CORS Test Page</h1>
+    <p>Testing API access from different origins...</p>
+    
+    <div class="test-section">
+        <h3>Test Login API</h3>
+        <button onclick="testLogin()">Test Login API</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test Register API</h3>
+        <button onclick="testRegister()">Test Register API</button>
+        <div id="registerResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Current Origin</h3>
+        <div class="result">Current URL: <span id="currentUrl"></span></div>
+        <div class="result">Origin: <span id="currentOrigin"></span></div>
+    </div>
+
+    <script>
+        // Display current URL and origin
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('currentOrigin').textContent = window.location.origin;
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = 'Testing...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('http://localhost:5502/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'test123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✅ Success!</span><br>Response: ${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.innerHTML = `<span class="error">❌ Error ${response.status}</span><br>Response: ${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ CORS Error</span><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testRegister() {
+            const resultDiv = document.getElementById('registerResult');
+            resultDiv.innerHTML = 'Testing...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('http://localhost:5502/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test User',
+                        email: 'test@example.com',
+                        password: 'test123',
+                        dob: '1990-01-01',
+                        place: 'Test City'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✅ Success!</span><br>Response: ${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.innerHTML = `<span class="error">❌ Error ${response.status}</span><br>Response: ${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ CORS Error</span><br>Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html> 

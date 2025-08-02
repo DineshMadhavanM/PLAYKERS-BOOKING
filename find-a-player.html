@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Player - PLAYKERS BOOKING</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: #ececf2; margin: 0; font-family: 'Montserrat', Arial, sans-serif; }
+    .hero {
+      width: 100%;
+      background: linear-gradient(100deg, #1a237e 60%, #3949ab 100%);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 4px 24px rgba(26,35,126,0.10);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(26,35,126,0.10); }
+    .hero p { font-size: 1.2em; font-weight: 500; margin-bottom: 0; color: #fffde7; text-shadow: 0 1px 4px rgba(26,35,126,0.10); }
+    .main-content { max-width: 520px; margin: 0 auto; }
+    .filter-group { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .filter-group input, .filter-group select { width: auto; flex: 1; padding: 10px; border-radius: 8px; border: 1.5px solid #bdbdbd; font-size: 1em; }
+    .cards-list { margin-top: 24px; }
+    .player-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(26,35,126,0.10); padding: 16px; margin-bottom: 16px; }
+    .status-badge { display: inline-block; padding: 2px 10px; border-radius: 8px; font-size: 0.9em; margin-left: 8px; }
+    .status-badge.available { background: #43a047; color: #fff; }
+    .status-badge.unavailable { background: #bdbdbd; color: #fff; }
+    .request-btn { background: #1976d2; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; margin-top: 10px; cursor: pointer; }
+    .request-btn:hover { background: #ffb300; color: #1a237e; }
+    .modal-backdrop { position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; z-index:1000; }
+    .modal { background:#fff; border-radius:12px; padding:32px 24px; min-width:300px; }
+    @media (max-width: 600px) {
+      .main-content { max-width: 98vw; }
+      .filter-group { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Find a Player</h1>
+    <p>Search for available players by game, date, location, and landmark.</p>
+  </div>
+  <div class="main-content">
+    <!-- Search Bar -->
+    <div class="search-bar" style="margin-bottom: 20px; display: flex; gap: 8px;">
+      <input type="text" id="search-input" placeholder="Search players by name, game, or location..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1.5px solid #bdbdbd; font-size: 1em; box-sizing: border-box;" />
+      <button id="search-btn" style="padding: 12px 20px; background: #1976d2; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em;">Search</button>
+    </div>
+    
+    <div class="filter-group">
+      <select id="game-filter">
+        <option value="">All Games</option>
+        <option value="cricket">Cricket</option>
+        <option value="football">Football</option>
+        <option value="kabaddi">Kabaddi</option>
+        <option value="volleyball">Volleyball</option>
+        <option value="handball">Handball</option>
+      </select>
+      <input type="date" id="date-filter" />
+      <select id="location-select">
+        <option value="">All Locations</option>
+        <option value="Chennai">Chennai</option>
+        <option value="Coimbatore">Coimbatore</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Tiruchirappalli">Tiruchirappalli</option>
+        <option value="Salem">Salem</option>
+        <option value="Tirunelveli">Tirunelveli</option>
+        <option value="Erode">Erode</option>
+        <option value="Vellore">Vellore</option>
+        <option value="Thoothukudi">Thoothukudi</option>
+        <option value="Dindigul">Dindigul</option>
+        <option value="Thanjavur">Thanjavur</option>
+        <option value="Cuddalore">Cuddalore</option>
+        <option value="Kanchipuram">Kanchipuram</option>
+        <option value="Kanyakumari">Kanyakumari</option>
+        <option value="Karur">Karur</option>
+        <option value="Namakkal">Namakkal</option>
+        <option value="Sivaganga">Sivaganga</option>
+        <option value="Virudhunagar">Virudhunagar</option>
+        <option value="Pudukkottai">Pudukkottai</option>
+        <option value="Nagapattinam">Nagapattinam</option>
+        <option value="Tiruppur">Tiruppur</option>
+        <option value="Ramanathapuram">Ramanathapuram</option>
+        <option value="Theni">Theni</option>
+        <option value="Krishnagiri">Krishnagiri</option>
+        <option value="Dharmapuri">Dharmapuri</option>
+        <option value="Ariyalur">Ariyalur</option>
+        <option value="Perambalur">Perambalur</option>
+        <option value="Nilgiris">Nilgiris</option>
+        <option value="Villupuram">Villupuram</option>
+        <option value="Tiruvarur">Tiruvarur</option>
+        <option value="Ranipet">Ranipet</option>
+        <option value="Chengalpattu">Chengalpattu</option>
+        <option value="Tirupathur">Tirupathur</option>
+        <option value="Tenkasi">Tenkasi</option>
+        <option value="Other">Other</option>
+      </select>
+      <input id="other-location-input" placeholder="Enter other location" style="display:none;" />
+      <input id="landmark-filter" name="landmark" placeholder="Landmark (Optional)" />
+    </div>
+    <div class="cards-list">
+      <!-- Player cards will be rendered here by JS -->
+    </div>
+  </div>
+  <div id="modalBackdrop" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <form id="requestForm">
+        <h2>Request to Play</h2>
+        <input name="senderName" placeholder="Your Name" required />
+        <input name="place" placeholder="Your Place" required />
+        <input name="phone" placeholder="Your Phone" required />
+        <button type="submit" class="btn">Send</button>
+        <button type="button" class="btn" id="closeModalBtn" style="background:#ececf2;color:#1a237e;">Cancel</button>
+      </form>
+      <div id="requestSent" style="display:none;">
+        <h3>Request Sent!</h3>
+        <button class="btn" id="closeModalBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Location "Other" logic
+    const locationSelect = document.getElementById('location-select');
+    const otherLocationInput = document.getElementById('other-location-input');
+    locationSelect.addEventListener('change', function() {
+      if (this.value === 'Other') {
+        otherLocationInput.style.display = '';
+        otherLocationInput.required = true;
+      } else {
+        otherLocationInput.style.display = 'none';
+        otherLocationInput.required = false;
+      }
+    });
+
+    // Fetch and render players
+    async function fetchPlayers() {
+      const gameType = document.getElementById('game-filter').value;
+      const date = document.getElementById('date-filter').value;
+      let place = locationSelect.value;
+      if (place === 'Other') {
+        place = otherLocationInput.value;
+      }
+      const landmark = document.getElementById('landmark-filter').value;
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+      let url = 'http://localhost:5502/api/availabilities?playerAvailable=true';
+      if (gameType) url += `&gameType=${encodeURIComponent(gameType)}`;
+      if (place) url += `&place=${encodeURIComponent(place)}`;
+      if (landmark) url += `&landmark=${encodeURIComponent(landmark)}`;
+      if (date) url += `&date=${encodeURIComponent(date)}`;
+
+      const res = await fetch(url);
+      let players = await res.json();
+      
+      // Apply search filter
+      if (searchTerm) {
+        players = players.filter(player => 
+          player.playerName.toLowerCase().includes(searchTerm) ||
+          player.gameType.toLowerCase().includes(searchTerm) ||
+          player.place.toLowerCase().includes(searchTerm) ||
+          (player.landmark && player.landmark.toLowerCase().includes(searchTerm))
+        );
+      }
+      
+      renderPlayers(players);
+    }
+
+    function renderPlayers(players) {
+      const list = document.querySelector('.cards-list');
+      if (!players.length) {
+        list.innerHTML = '<i>No players found.</i>';
+        return;
+      }
+      list.innerHTML = players.map((p, idx) => `
+        <div class="player-card">
+          <b>${p.playerName}</b> <span class="status-badge available">Available</span><br>
+          <b>Game:</b> ${p.gameType}<br>
+          <b>Location:</b> ${p.place}<br>
+          <b>Landmark:</b> ${p.landmark || ''}<br>
+          <b>Date/Time:</b> ${p.date} ${p.time}<br>
+          <b>Contact:</b> ${p.phone}<br>
+          <button class="request-btn" onclick="showRequestForm(${idx})">Request to Play</button>
+        </div>
+      `).join('');
+      window.currentPlayers = players;
+    }
+
+    // Fetch on page load and on filter change
+    document.addEventListener('DOMContentLoaded', fetchPlayers);
+    document.querySelectorAll('.filter-group select, .filter-group input').forEach(el => {
+      el.addEventListener('change', fetchPlayers);
+      el.addEventListener('input', fetchPlayers);
+    });
+    
+    // Search button click
+    document.getElementById('search-btn').addEventListener('click', fetchPlayers);
+    
+    // Search input - search on Enter key or after typing stops
+    let searchTimeout;
+    document.getElementById('search-input').addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(fetchPlayers, 500); // Search after 500ms of no typing
+    });
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        fetchPlayers();
+      }
+    });
+
+    // Request to Play modal logic
+    let requestIdx = null;
+    window.showRequestForm = function(idx) {
+      requestIdx = idx;
+      document.getElementById("modalBackdrop").style.display = "flex";
+      document.getElementById("requestForm").style.display = "block";
+      document.getElementById("requestSent").style.display = "none";
+    };
+    document.getElementById("closeModalBtn").onclick =
+    document.getElementById("closeModalBtn2").onclick = function() {
+      document.getElementById("modalBackdrop").style.display = "none";
+    };
+    document.getElementById("requestForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const a = window.currentPlayers[requestIdx];
+      const senderName = this.senderName.value;
+      const place = this.place.value;
+      const phone = this.phone.value;
+      await fetch('http://localhost:5502/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          receiverId: a._id,
+          receiverName: a.playerName,
+          senderName,
+          place,
+          phone,
+          gameType: a.gameType,
+          date: a.date,
+          time: a.time
+        })
+      });
+      document.getElementById("requestForm").style.display = "none";
+      document.getElementById("requestSent").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("modalBackdrop").style.display = "none";
+      }, 2000);
+    };
+  </script>
+</body>
+</html> 

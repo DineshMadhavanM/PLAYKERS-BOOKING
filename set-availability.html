@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set Availability - PLAYKERS BOOKING</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: #ececf2; margin: 0; font-family: 'Montserrat', Arial, sans-serif; }
+    .hero {
+      width: 100%;
+      background: linear-gradient(100deg, #1a237e 60%, #3949ab 100%);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 4px 24px rgba(26,35,126,0.10);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(26,35,126,0.10); }
+    .hero p { font-size: 1.2em; font-weight: 500; margin-bottom: 0; color: #fffde7; text-shadow: 0 1px 4px rgba(26,35,126,0.10); }
+    .main-content { max-width: 520px; margin: 0 auto; }
+    .form-section { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(26,35,126,0.10); padding: 32px 24px; margin-bottom: 32px; }
+    .form-section h2 { color: #1a237e; margin-bottom: 18px; }
+    .form-section input, .form-section select { width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1.5px solid #bdbdbd; font-size: 1em; margin-bottom: 12px; }
+    .toggle-group { display: flex; align-items: center; gap: 16px; margin-top: 12px; margin-bottom: 12px; }
+    .toggle-label { font-weight: 500; color: #3949ab; }
+    .form-section button { background: #1a237e; color: #fff; border: none; padding: 12px 0; border-radius: 8px; font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 12px; width: 100%; }
+    .form-section button:hover { background: #ffb300; color: #1a237e; }
+    @media (max-width: 600px) {
+      .main-content { max-width: 98vw; }
+      .form-section { padding: 16px 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Set Availability</h1>
+    <p>Let others know when and where you are available to play or host a match.</p>
+  </div>
+  <div class="main-content">
+    <div class="form-section">
+      <form>
+        <h2>Set Your Availability</h2>
+        <input name="playerName" placeholder="Player Name" required />
+        <select name="place" id="place-select" required>
+          <option value="">Select Location</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Coimbatore">Coimbatore</option>
+          <option value="Madurai">Madurai</option>
+          <option value="Tiruchirappalli">Tiruchirappalli</option>
+          <option value="Salem">Salem</option>
+          <option value="Tirunelveli">Tirunelveli</option>
+          <option value="Erode">Erode</option>
+          <option value="Vellore">Vellore</option>
+          <option value="Thoothukudi">Thoothukudi</option>
+          <option value="Dindigul">Dindigul</option>
+          <option value="Thanjavur">Thanjavur</option>
+          <option value="Cuddalore">Cuddalore</option>
+          <option value="Kanchipuram">Kanchipuram</option>
+          <option value="Kanyakumari">Kanyakumari</option>
+          <option value="Karur">Karur</option>
+          <option value="Namakkal">Namakkal</option>
+          <option value="Sivaganga">Sivaganga</option>
+          <option value="Virudhunagar">Virudhunagar</option>
+          <option value="Pudukkottai">Pudukkottai</option>
+          <option value="Nagapattinam">Nagapattinam</option>
+          <option value="Tiruppur">Tiruppur</option>
+          <option value="Ramanathapuram">Ramanathapuram</option>
+          <option value="Theni">Theni</option>
+          <option value="Krishnagiri">Krishnagiri</option>
+          <option value="Dharmapuri">Dharmapuri</option>
+          <option value="Ariyalur">Ariyalur</option>
+          <option value="Perambalur">Perambalur</option>
+          <option value="Nilgiris">Nilgiris</option>
+          <option value="Villupuram">Villupuram</option>
+          <option value="Tiruvarur">Tiruvarur</option>
+          <option value="Ranipet">Ranipet</option>
+          <option value="Chengalpattu">Chengalpattu</option>
+          <option value="Tirupathur">Tirupathur</option>
+          <option value="Tenkasi">Tenkasi</option>
+          <option value="Other">Other</option>
+        </select>
+        <input name="otherPlace" id="other-place-input" placeholder="Enter other location" style="display:none;" />
+        <input name="landmark" placeholder="Landmark" required />
+        <input name="date" type="date" required />
+        <input name="time" type="time" required />
+        <input name="email" type="email" placeholder="Email ID" required />
+        <input name="phone" placeholder="Phone Number" required />
+        <select name="gameType" required>
+          <option value="">Select Game Type</option>
+          <option value="cricket">Cricket</option>
+          <option value="football">Football</option>
+          <option value="kabaddi">Kabaddi</option>
+          <option value="volleyball">Volleyball</option>
+          <option value="handball">Handball</option>
+        </select>
+        <div class="toggle-group">
+          <span class="toggle-label">Are you available to play this match?</span>
+          <label><input type="radio" name="playerAvailable" value="yes" required /> Yes</label>
+          <label><input type="radio" name="playerAvailable" value="no" /> No</label>
+        </div>
+        <div class="toggle-group">
+          <span class="toggle-label">Is this match available for joining?</span>
+          <label><input type="radio" name="matchAvailable" value="yes" required /> Yes</label>
+          <label><input type="radio" name="matchAvailable" value="no" /> No</label>
+        </div>
+        <button type="submit">Set Availability</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    const placeSelect = document.getElementById('place-select');
+    const otherPlaceInput = document.getElementById('other-place-input');
+    placeSelect.addEventListener('change', function() {
+      if (this.value === 'Other') {
+        otherPlaceInput.style.display = '';
+        otherPlaceInput.required = true;
+      } else {
+        otherPlaceInput.style.display = 'none';
+        otherPlaceInput.required = false;
+      }
+    });
+
+    document.querySelector('form').onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      
+      // Disable submit button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving...';
+      
+      const data = Object.fromEntries(new FormData(form).entries());
+      // If "Other" is selected, use the otherPlace value
+      if (data.place === 'Other') data.place = data.otherPlace;
+      
+      try {
+        const res = await fetch('http://localhost:5502/api/availabilities', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
+        }
+        
+        const saved = await res.json();
+        alert('Availability saved successfully!');
+        form.reset();
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Failed to save availability: ${error.message}`);
+      } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Set Availability';
+      }
+    };
+  </script>
+</body>
+</html> 

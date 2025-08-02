@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invite Players & Match Availability</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: #ececf2; margin: 0; font-family: 'Montserrat', Arial, sans-serif; }
+    .invite-hero {
+      width: 100%;
+      background: linear-gradient(100deg, #1a237e 60%, #3949ab 100%);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 4px 24px rgba(26,35,126,0.10);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .invite-hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(26,35,126,0.10); }
+    .invite-hero p { font-size: 1.2em; font-weight: 500; margin-bottom: 0; color: #fffde7; text-shadow: 0 1px 4px rgba(26,35,126,0.10); }
+    .main-content { max-width: 520px; margin: 0 auto; }
+    .feature-options { display: flex; flex-direction: column; gap: 32px; margin-top: 48px; }
+    .feature-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(26,35,126,0.10);
+      padding: 36px 24px;
+      text-align: center;
+      font-size: 1.3em;
+      font-weight: 700;
+      color: #1a237e;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .feature-card:hover {
+      background: #1a237e;
+      color: #fff;
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 32px rgba(26,35,126,0.16);
+    }
+    @media (max-width: 600px) {
+      .main-content { max-width: 98vw; }
+      .feature-card { padding: 20px 8px; font-size: 1.1em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="invite-hero">
+    <h1>Invite Players & Match Availability</h1>
+    <p>Choose an option below to get started.</p>
+  </div>
+  <div class="main-content">
+    <div class="feature-options">
+      <div class="feature-card"><a href="set-availability.html">Set Availability</a></div>
+      <div class="feature-card"><a href="find-a-player.html">Find a Player</a></div>
+      <div class="feature-card"><a href="find-a-match.html">Find a Match</a></div>
+    </div>
+  </div>
+</body>
+</html>

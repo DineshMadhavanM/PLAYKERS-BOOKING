@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Availability System - PLAYKERS BOOKING</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { 
+            background: #ececf2; 
+            margin: 0; 
+            font-family: 'Montserrat', Arial, sans-serif; 
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 24px rgba(26,35,126,0.10);
+        }
+        .section h2 {
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #1565c0;
+        }
+        .btn.success {
+            background: #43a047;
+        }
+        .btn.danger {
+            background: #f44336;
+        }
+        .data-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #1a237e; margin-bottom: 30px;">Test Availability System</h1>
+    
+    <div class="container">
+        <div class="section">
+            <h2>1. Set Availability</h2>
+            <p>Submit availability data to test the system:</p>
+            <button class="btn" onclick="testSetAvailability()">Test Set Availability</button>
+            <div id="set-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>2. View All Availabilities</h2>
+            <p>View all stored availability data:</p>
+            <button class="btn" onclick="loadAllAvailabilities()">Load All Availabilities</button>
+            <div id="availabilities-display" class="data-display"></div>
+        </div>
+        
+        <div class="section">
+            <h2>3. Test Find-a-Match Filter</h2>
+            <p>Test filtering for matches (matchAvailable=true):</p>
+            <button class="btn" onclick="testFindMatch()">Test Find Match</button>
+            <div id="matches-display" class="data-display"></div>
+        </div>
+        
+        <div class="section">
+            <h2>4. Test Find-a-Player Filter</h2>
+            <p>Test filtering for players (playerAvailable=true):</p>
+            <button class="btn" onclick="testFindPlayer()">Test Find Player</button>
+            <div id="players-display" class="data-display"></div>
+        </div>
+        
+        <div class="section">
+            <h2>5. Test Message System</h2>
+            <p>Test sending a request message:</p>
+            <button class="btn" onclick="testSendMessage()">Test Send Message</button>
+            <div id="message-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>6. View All Messages</h2>
+            <p>View all stored messages:</p>
+            <button class="btn" onclick="loadAllMessages()">Load All Messages</button>
+            <div id="messages-display" class="data-display"></div>
+        </div>
+        
+        <div class="section">
+            <h2>7. Clear All Data</h2>
+            <p>Clear all stored data (refresh page to reset):</p>
+            <button class="btn danger" onclick="clearAllData()">Clear All Data</button>
+            <div id="clear-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>8. Quick Navigation</h2>
+            <p>Navigate to the actual pages:</p>
+            <a href="set-availability.html" class="btn">Set Availability Page</a>
+            <a href="find-a-match.html" class="btn">Find a Match Page</a>
+            <a href="find-a-player.html" class="btn">Find a Player Page</a>
+        </div>
+    </div>
+
+    <script>
+        // Test data for availability
+        const testAvailabilityData = {
+            playerName: 'Test Player',
+            place: 'Chennai',
+            landmark: 'Test Landmark',
+            date: '2024-01-20',
+            time: '14:00',
+            email: 'test@example.com',
+            phone: '1234567890',
+            gameType: 'cricket',
+            playerAvailable: 'yes',
+            matchAvailable: 'yes'
+        };
+
+        // Test data for message
+        const testMessageData = {
+            receiverId: 'test-receiver-id',
+            receiverName: 'Test Receiver',
+            senderName: 'Test Sender',
+            place: 'Test Place',
+            phone: '9876543210',
+            gameType: 'cricket',
+            date: '2024-01-20',
+            time: '14:00'
+        };
+
+        async function testSetAvailability() {
+            const statusDiv = document.getElementById('set-status');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.textContent = 'Setting availability...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/availabilities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testAvailabilityData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Availability set successfully!';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `❌ Error: ${result.error}`;
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Network error: ${error.message}`;
+            }
+        }
+
+        async function loadAllAvailabilities() {
+            const displayDiv = document.getElementById('availabilities-display');
+            displayDiv.textContent = 'Loading...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/availabilities');
+                const availabilities = await response.json();
+
+                if (availabilities.length === 0) {
+                    displayDiv.textContent = 'No availabilities found.';
+                } else {
+                    displayDiv.innerHTML = availabilities.map(a => `
+                        <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                            <strong>${a.playerName}</strong> - ${a.gameType}<br>
+                            Location: ${a.place} (${a.landmark})<br>
+                            Date: ${a.date} at ${a.time}<br>
+                            Player Available: ${a.playerAvailable} | Match Available: ${a.matchAvailable}<br>
+                            Contact: ${a.phone} | ${a.email}
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                displayDiv.textContent = `Error loading availabilities: ${error.message}`;
+            }
+        }
+
+        async function testFindMatch() {
+            const displayDiv = document.getElementById('matches-display');
+            displayDiv.textContent = 'Loading matches...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/availabilities?matchAvailable=true');
+                const matches = await response.json();
+
+                if (matches.length === 0) {
+                    displayDiv.textContent = 'No matches found.';
+                } else {
+                    displayDiv.innerHTML = matches.map(m => `
+                        <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                            <strong>${m.playerName}</strong> - ${m.gameType}<br>
+                            Location: ${m.place} (${m.landmark})<br>
+                            Date: ${m.date} at ${m.time}<br>
+                            Contact: ${m.phone}
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                displayDiv.textContent = `Error loading matches: ${error.message}`;
+            }
+        }
+
+        async function testFindPlayer() {
+            const displayDiv = document.getElementById('players-display');
+            displayDiv.textContent = 'Loading players...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/availabilities?playerAvailable=true');
+                const players = await response.json();
+
+                if (players.length === 0) {
+                    displayDiv.textContent = 'No players found.';
+                } else {
+                    displayDiv.innerHTML = players.map(p => `
+                        <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                            <strong>${p.playerName}</strong> - ${p.gameType}<br>
+                            Location: ${p.place} (${p.landmark})<br>
+                            Date: ${p.date} at ${p.time}<br>
+                            Contact: ${p.phone}
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                displayDiv.textContent = `Error loading players: ${error.message}`;
+            }
+        }
+
+        async function testSendMessage() {
+            const statusDiv = document.getElementById('message-status');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.textContent = 'Sending message...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testMessageData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Message sent successfully!';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `❌ Error: ${result.error}`;
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Network error: ${error.message}`;
+            }
+        }
+
+        async function loadAllMessages() {
+            const displayDiv = document.getElementById('messages-display');
+            displayDiv.textContent = 'Loading...';
+
+            try {
+                const response = await fetch('http://localhost:5502/api/messages');
+                const messages = await response.json();
+
+                if (messages.length === 0) {
+                    displayDiv.textContent = 'No messages found.';
+                } else {
+                    displayDiv.innerHTML = messages.map(m => `
+                        <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                            <strong>From:</strong> ${m.senderName} (${m.phone})<br>
+                            <strong>To:</strong> ${m.receiverName}<br>
+                            <strong>Game:</strong> ${m.gameType}<br>
+                            <strong>Date:</strong> ${m.date} at ${m.time}<br>
+                            <strong>Place:</strong> ${m.place}
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                displayDiv.textContent = `Error loading messages: ${error.message}`;
+            }
+        }
+
+        function clearAllData() {
+            const statusDiv = document.getElementById('clear-status');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ Data cleared! Refresh the page to reset the server data.';
+            
+            // Clear all displays
+            document.getElementById('availabilities-display').textContent = '';
+            document.getElementById('matches-display').textContent = '';
+            document.getElementById('players-display').textContent = '';
+            document.getElementById('messages-display').textContent = '';
+        }
+
+        // Load initial data
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllAvailabilities();
+            loadAllMessages();
+        });
+    </script>
+</body>
+</html> 

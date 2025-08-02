@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - SportStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background-color: var(--light-color);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .search-bar button {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background: #d97706;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Order Details */
+        .order-details {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .order-id {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Order Items */
+        .order-items {
+            margin-bottom: 2rem;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--gray-200), var(--gray-300));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .item-price {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .item-total {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: var(--gray-50);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--gray-200);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .summary-label {
+            color: var(--gray-600);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* Tracking */
+        .tracking-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .tracking-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+            background: var(--gray-300);
+        }
+
+        .step-icon.completed {
+            background: var(--success-color);
+        }
+
+        .step-icon.current {
+            background: var(--primary-color);
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .step-label.completed {
+            color: var(--success-color);
+        }
+
+        .step-label.current {
+            color: var(--primary-color);
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .steps-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .steps-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+
+        .steps-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .search-bar {
+                margin: 1rem 0;
+                max-width: 100%;
+            }
+
+            .tracking-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tracking-steps::before {
+                display: none;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                SportStore
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search for sports equipment..." id="searchInput">
+                <button onclick="searchProducts()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <nav class="nav">
+                <a href="ecommerce.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="categories.html">Categories</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            
+            <div class="user-actions">
+                <a href="login.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="cart-icon" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Success Message -->
+        <div class="success-message">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1 class="success-title">Order Confirmed!</h1>
+            <p class="success-subtitle">Thank you for your purchase. Your order has been successfully placed.</p>
+        </div>
+
+        <!-- Order Details -->
+        <div class="order-details">
+            <h2 class="section-title">
+                <i class="fas fa-receipt"></i>
+                Order Details
+            </h2>
+            
+            <div class="order-info">
+                <div class="info-item">
+                    <span class="info-label">Order ID</span>
+                    <span class="info-value order-id" id="orderId">ORD123456789</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Order Date</span>
+                    <span class="info-value" id="orderDate">January 15, 2024</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Payment Method</span>
+                    <span class="info-value" id="paymentMethod">Credit Card</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Order Status</span>
+                    <span class="info-value" id="orderStatus">Processing</span>
+                </div>
+            </div>
+
+            <div class="order-items">
+                <h3>Order Items</h3>
+                <div id="orderItems">
+                    <!-- Order items will be loaded here -->
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span class="summary-label">Subtotal</span>
+                    <span class="summary-value" id="subtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Shipping</span>
+                    <span class="summary-value" id="shipping">₹0</span>
+                </div>
+                <div class="summary-row" id="discountRow" style="display: none;">
+                    <span class="summary-label">Discount</span>
+                    <span class="summary-value" id="discount">-₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-value" id="total">₹0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracking -->
+        <div class="tracking-section">
+            <h2 class="section-title">
+                <i class="fas fa-truck"></i>
+                Order Tracking
+            </h2>
+            
+            <div class="tracking-steps">
+                <div class="tracking-step">
+                    <div class="step-icon completed">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="step-label completed">Order Placed</span>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon current">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <span class="step-label current">Processing</span>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="step-label">Shipped</span>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <span class="step-label">Delivered</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="next-steps">
+            <h2 class="section-title">
+                <i class="fas fa-list-check"></i>
+                What's Next?
+            </h2>
+            
+            <ul class="steps-list">
+                <li>
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Order Confirmation Email</h4>
+                        <p>You'll receive a confirmation email with your order details within the next few minutes.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Order Processing</h4>
+                        <p>We'll process your order and prepare it for shipping within 24-48 hours.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Shipping Updates</h4>
+                        <p>You'll receive tracking information once your order ships.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Delivery</h4>
+                        <p>Your order will be delivered within 3-5 business days.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="ecommerce.html" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Continue Shopping
+            </a>
+            <a href="profile.html" class="btn btn-secondary">
+                <i class="fas fa-user"></i>
+                View My Orders
+            </a>
+            <button class="btn btn-secondary" onclick="downloadInvoice()">
+                <i class="fas fa-download"></i>
+                Download Invoice
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let orderData = {};
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderData();
+            updateCartCount();
+        });
+
+        // Load order data
+        function loadOrderData() {
+            // In a real application, you would get this from the URL parameters or API
+            // For demo purposes, we'll use sample data
+            orderData = {
+                orderId: `ORD${Date.now()}`,
+                orderDate: new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                paymentMethod: 'Credit Card',
+                orderStatus: 'Processing',
+                items: [
+                    {
+                        name: 'Premium Cricket Bat',
+                        price: 2999,
+                        quantity: 1,
+                        image: '🏏'
+                    },
+                    {
+                        name: 'Professional Football',
+                        price: 1499,
+                        quantity: 2,
+                        image: '⚽'
+                    }
+                ],
+                subtotal: 5997,
+                shipping: 0,
+                discount: 0,
+                total: 5997
+            };
+
+            displayOrderDetails();
+        }
+
+        // Display order details
+        function displayOrderDetails() {
+            // Update order info
+            document.getElementById('orderId').textContent = orderData.orderId;
+            document.getElementById('orderDate').textContent = orderData.orderDate;
+            document.getElementById('paymentMethod').textContent = orderData.paymentMethod;
+            document.getElementById('orderStatus').textContent = orderData.orderStatus;
+
+            // Display order items
+            const container = document.getElementById('orderItems');
+            container.innerHTML = '';
+
+            orderData.items.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                
+                orderItem.innerHTML = `
+                    <div class="item-image">
+                        ${item.image}
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">₹${item.price.toLocaleString()} × ${item.quantity}</div>
+                    </div>
+                    <div class="item-total">
+                        ₹${(item.price * item.quantity).toLocaleString()}
+                    </div>
+                `;
+                
+                container.appendChild(orderItem);
+            });
+
+            // Update summary
+            document.getElementById('subtotal').textContent = `₹${orderData.subtotal.toLocaleString()}`;
+            document.getElementById('shipping').textContent = `₹${orderData.shipping.toLocaleString()}`;
+            document.getElementById('total').textContent = `₹${orderData.total.toLocaleString()}`;
+
+            // Show/hide discount
+            if (orderData.discount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discount').textContent = `-₹${orderData.discount.toLocaleString()}`;
+            }
+        }
+
+        // Download invoice
+        function downloadInvoice() {
+            // In a real application, this would generate and download a PDF invoice
+            alert('Invoice download feature would be implemented here. For now, you can print this page as your invoice.');
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        // Search products
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm) {
+                window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
+            }
+        }
+
+        // Open cart
+        function openCart() {
+            window.location.href = 'cart.html';
+        }
+
+        // Search input enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+    </script>
+</body>
+</html> 

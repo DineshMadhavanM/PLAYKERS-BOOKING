@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PLAYKERS BOOKING</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --border-focus: #2563eb;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .signup-container {
+            max-width: 480px;
+            width: 100%;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #7c3aed);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .signup-container h2 {
+            color: var(--text-primary);
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .signup-container .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.875rem;
+            letter-spacing: 0.025em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .signup-container input[type="text"],
+        .signup-container input[type="date"],
+        .signup-container input[type="email"],
+        .signup-container input[type="password"] {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 400;
+            outline: none;
+            transition: all 0.2s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .signup-container input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: var(--bg-primary);
+        }
+
+        .signup-container input:focus + .input-icon {
+            color: var(--primary-color);
+        }
+
+        .signup-container input::placeholder {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .signup-container input:invalid:not(:placeholder-shown) {
+            border-color: var(--error-color);
+        }
+
+        .signup-container input:valid:not(:placeholder-shown) {
+            border-color: var(--success-color);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .signup-container button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.025em;
+        }
+
+        .signup-container button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .signup-container button:hover::before {
+            left: 100%;
+        }
+
+        .signup-container button:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .signup-container button:active {
+            transform: translateY(0);
+        }
+
+        .signup-container button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .login-link span {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+
+        .signup-container .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 0.25rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .signup-container .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.2s ease;
+        }
+
+        .signup-container .back-link:hover::after {
+            width: 100%;
+        }
+
+        .signup-container .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        #message {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
+
+        .error {
+            background: linear-gradient(135deg, var(--error-color), #dc2626);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .signup-container {
+                padding: 2rem 1.5rem;
+                margin: 0.5rem;
+            }
+
+            .signup-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .signup-container input[type="text"],
+            .signup-container input[type="date"],
+            .signup-container input[type="email"],
+            .signup-container input[type="password"] {
+                padding: 0.75rem 1rem 0.75rem 2.25rem;
+                font-size: 1rem;
+            }
+
+            .input-icon {
+                left: 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .password-toggle {
+                right: 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .signup-container button:focus,
+        .signup-container input:focus,
+        .password-toggle:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h2>Create Account</h2>
+            <p class="subtitle">Join our community and start your journey with Playkers</p>
+        </div>
+        
+        <form>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-calendar input-icon"></i>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="place">Location</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-map-marker-alt input-icon"></i>
+                    <input type="text" id="place" name="place" placeholder="Enter your city/location" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <i class="fas fa-user-plus"></i>
+                Create Account
+            </button>
+        </form>
+        
+        <div class="login-link">
+            <span>Already have an account?</span>
+            <a class="back-link" href="login.html">Sign in here</a>
+        </div>
+        
+        <!-- Success/Error Messages -->
+        <div id="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Password toggle functionality
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.className = 'fas fa-eye';
+            }
+        }
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Add loading state
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            submitBtn.disabled = true;
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                dob: document.getElementById('dob').value,
+                place: document.getElementById('place').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+            
+            try {
+                const response = await fetch('http://localhost:5502/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('<i class="fas fa-check-circle"></i> Account created successfully! Redirecting to login...', 'success');
+                    // Store user ID for later use
+                    localStorage.setItem('userId', result.userId);
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2500);
+                } else {
+                    showMessage('<i class="fas fa-exclamation-circle"></i> ' + (result.error || 'Registration failed. Please try again.'), 'error');
+                }
+            } catch (error) {
+                showMessage('<i class="fas fa-times-circle"></i> Network error. Please check your connection and try again.', 'error');
+            } finally {
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                submitBtn.disabled = false;
+            }
+        });
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = text;
+            messageDiv.className = type;
+            messageDiv.style.display = 'flex';
+            
+            // Auto-hide error messages after 5 seconds
+            if (type === 'error') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Enhanced input validation and real-time feedback
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    this.style.borderColor = '#10b981';
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#2563eb';
+            });
+        });
+        
+        function validateField(field) {
+            const value = field.value.trim();
+            
+            if (value === '') {
+                field.style.borderColor = '#ef4444';
+                return false;
+            }
+            
+            // Email validation
+            if (field.type === 'email') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    field.style.borderColor = '#ef4444';
+                    return false;
+                }
+            }
+            
+            // Password validation
+            if (field.type === 'password') {
+                if (value.length < 6) {
+                    field.style.borderColor = '#f59e0b';
+                    return false;
+                }
+            }
+            
+            field.style.borderColor = '#10b981';
+            return true;
+        }
+        
+        // Add smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
